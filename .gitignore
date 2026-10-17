@@ -1,0 +1,9 @@
+work/
+dist/
+vendor-sdk/
+**/bin/
+**/obj/
+# Third-party app, analysis notes and local camera data stay out of the repository.
+*.apk
+REVERSE_ENGINEERING.md
+cameras.json

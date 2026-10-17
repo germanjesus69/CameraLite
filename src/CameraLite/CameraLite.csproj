@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <AssemblyName>CameraLite</AssemblyName>
+    <ApplicationIcon>Assets\CameraLite.ico</ApplicationIcon>
+    <Version>0.4.1-preview.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="../../vendor-sdk/*" Link="vendor-sdk/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <ProjectReference Include="../CameraLite.Transport/CameraLite.Transport.csproj" />
+    <ProjectReference Include="../CameraLite.Transport.Host/CameraLite.Transport.Host.csproj" ReferenceOutputAssembly="false" />
+    <PackageReference Include="LibVLCSharp.WinForms" Version="3.10.2" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.24" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+  <Target Name="CopyTransportWorker" AfterTargets="Build;Publish">
+    <ItemGroup>
+      <WorkerFile Include="$(MSBuildProjectDirectory)/../CameraLite.Transport.Host/bin/$(Configuration)/net10.0-windows/win-x64/CameraLite.Transport.Host.exe;$(MSBuildProjectDirectory)/../CameraLite.Transport.Host/bin/$(Configuration)/net10.0-windows/win-x64/CameraLite.Transport.Host.dll;$(MSBuildProjectDirectory)/../CameraLite.Transport.Host/bin/$(Configuration)/net10.0-windows/win-x64/CameraLite.Transport.Host.deps.json;$(MSBuildProjectDirectory)/../CameraLite.Transport.Host/bin/$(Configuration)/net10.0-windows/win-x64/CameraLite.Transport.Host.runtimeconfig.json;$(MSBuildProjectDirectory)/../CameraLite.Transport.Host/bin/$(Configuration)/net10.0-windows/win-x64/CameraLite.Transport.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WorkerFile)" DestinationFolder="$(TargetDir)transport" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(WorkerFile)" DestinationFolder="$(PublishDir)transport" SkipUnchangedFiles="true" Condition="'$(PublishDir)' != ''" />
+  </Target>
+</Project>
